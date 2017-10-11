@@ -1,11 +1,14 @@
 'use strict';
-import * as vscode from 'vscode';
-import * as path from 'path';
-import * as fs from 'fs';
-import { ExtensionContext, TextDocumentContentProvider, EventEmitter, Event, Uri, ViewColumn } from 'vscode';
+import { readFileSync } from 'fs';
+import { ExtensionContext, TextDocumentContentProvider, EventEmitter, Event, Uri } from 'vscode';
 
 export class HtmlDocumentContentProvider implements TextDocumentContentProvider {
     private _onDidChange = new EventEmitter<Uri>();
+    private _mainHtml: string;
+
+    constructor(context: ExtensionContext) {
+        this._mainHtml = readFileSync(context.asAbsolutePath('pages/sample.html'), 'UTF-8');
+    }
 
     // Instructions to open Chrome DevTools on the HTML preview window:
     //
@@ -23,18 +26,7 @@ export class HtmlDocumentContentProvider implements TextDocumentContentProvider 
     //    Now you can debug the HTML preview in the sandboxed iframe.
 
     public provideTextDocumentContent(uri: Uri): string {
-
-        const content = `<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <title>Testing HTML</title>
-</head><body>
-<h1>This is a test</h1>
-</body></html>
-`;
-
-        return content;
+        return this._mainHtml;
     }
 
     get onDidChange(): Event<Uri> {

@@ -4,7 +4,7 @@ import { HtmlDocumentContentProvider } from './htmlDocumentContentProvider';
 
 export function activate(context: vscode.ExtensionContext) {
 
-    const htmlProvider = new HtmlDocumentContentProvider();
+    const htmlProvider = new HtmlDocumentContentProvider(context);
     const htmlRegistration = vscode.workspace.registerTextDocumentContentProvider('html-test', htmlProvider);
     context.subscriptions.push(htmlRegistration);
 
